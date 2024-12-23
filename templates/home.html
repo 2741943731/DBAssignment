@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Flask Navigation</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            margin-top: 50px;
+            color: #333;
+        }
+
+        .button-container {
+            margin-top: 30px;
+        }
+
+        .nav-button {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            margin-top: 50px;
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .password-container {
+            margin-top: 20px;
+        }
+
+        .password-input {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .password-button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .password-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>欢迎来到汽车管理系统</h1>
+    <p>点击下方的按钮，导航到相关的功能页面：</p>
+
+    <div class="password-container">
+        <input type="password" id="password" class="password-input" placeholder="输入密码">
+        <button onclick="validatePassword()" class="password-button">提交</button>
+    </div>
+
+    <div class="button-container" id="button-container">
+        <a href="/warehouses" class="nav-button">仓库管理</a>
+        <a href="/factories" class="nav-button">厂商管理</a>
+        <a href="/cars" class="nav-button">汽车管理</a>
+        <a href="/customers" class="nav-button">客户管理</a>
+        <a href="/orders" class="nav-button">订单管理</a>
+    </div>
+
+    <footer>
+        <p>© 2024 汽车管理系统</p>
+    </footer>
+
+    <script>
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+            const correctPassword = 'admin123'; // 指定的正确密码
+
+            if (password === correctPassword) {
+                const buttons = document.querySelectorAll('.nav-button');
+                buttons.forEach(button => {
+                    const form = document.createElement('form');
+                    form.action = button.href;
+                    form.method = 'POST';
+                    form.style.display = 'inline';
+
+                    const newButton = button.cloneNode(true);
+                    form.appendChild(newButton);
+
+                    button.parentNode.replaceChild(form, button);
+                });
+                alert('密码正确，链接已切换为 POST 调用');
+            } else {
+                alert('密码错误，请重试');
+            }
+        }
+    </script>
+</body>
+</html>
