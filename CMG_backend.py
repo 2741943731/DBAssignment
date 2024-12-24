@@ -34,7 +34,6 @@ class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     model = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    warehouse_id = db.Column(db.Integer, db.ForeignKey('warehouse.id'), nullable=False)
     factory_id = db.Column(db.Integer, db.ForeignKey('factory.id'), nullable=False)
 
 
@@ -226,11 +225,10 @@ def manage_cars():
         # 获取表单数据
         model = request.form['model']
         price = request.form['price']
-        warehouse_id = request.form['warehouse_id']
         factory_id = request.form['factory_id']
 
         # 保存到数据库
-        new_car = Car(model=model, price=price, warehouse_id=warehouse_id, factory_id=factory_id)
+        new_car = Car(model=model, price=price, factory_id=factory_id)
         db.session.add(new_car)
         db.session.commit()
 

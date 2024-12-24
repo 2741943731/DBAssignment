@@ -1,6 +1,6 @@
 USE CMG;
 
-drop table if exists InventoryInfo;
+drop table if exists Inventory_Info;
 drop table if exists Orders;
 drop table if exists Customer;
 drop table if exists Car;
@@ -31,9 +31,7 @@ CREATE TABLE if not exists Car (
     id INT AUTO_INCREMENT PRIMARY KEY,
     model VARCHAR(100) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    warehouse_id INT NOT NULL,
     factory_id INT NOT NULL,
-    FOREIGN KEY (warehouse_id) REFERENCES Warehouse(id) ON DELETE CASCADE,
     FOREIGN KEY (factory_id) REFERENCES Factory(id) ON DELETE CASCADE
 );
 
@@ -81,10 +79,10 @@ VALUES ('Toyota', '123 Factory Lane', 'factory1@example.com'),
 INSERT INTO Warehouse (name, total_inventory, used_inventory, manager_id)
 VALUES ('Main Warehouse', 200, 100, 1), ('Secondary Warehouse', 100, 50, 2);
 
-INSERT INTO Car (model, price, warehouse_id, factory_id)
-VALUES ('Toyota Corolla', 20000.00, 1, 1), 
-       ('Honda Civic', 22000.00, 1, 2), 
-       ('Ford Focus', 18000.00, 2, 1);
+INSERT INTO Car (model, price, factory_id)
+VALUES ('Toyota Corolla', 20000.00, 1),
+       ('Honda Civic', 22000.00, 2),
+       ('Ford Focus', 18000.00, 1);
 
 INSERT INTO Customer (name, phone, address)
 VALUES ('Alice', '1234567890', '123 Main St'), 
