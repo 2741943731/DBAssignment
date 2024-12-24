@@ -96,7 +96,6 @@
                 <th>汽车ID</th>
                 <th>型号</th>
                 <th>价格</th>
-                <th>仓库ID</th>
                 <th>厂商ID</th>
                 <th>操作</th>
             </tr>
@@ -107,7 +106,6 @@
                 <td>{{ car.id }}</td>
                 <td>{{ car.model }}</td>
                 <td>{{ car.price }}</td>
-                <td>{{ car.warehouse_id }}</td>
                 <td>{{ car.factory_id }}</td>
                 <td>
                     <form method="POST" action="/cars/{{ car.id }}/delete" style="display:inline;">
@@ -126,9 +124,6 @@
 
         <label for="price">价格</label>
         <input type="number" id="price" name="price" required>
-
-        <label for="warehouse_id">仓库ID</label>
-        <input type="number" id="warehouse_id" name="warehouse_id" required>
 
         <label for="factory_id">厂商ID</label>
         <input type="number" id="factory_id" name="factory_id" required>
