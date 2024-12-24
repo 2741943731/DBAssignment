@@ -73,6 +73,19 @@
             background-color: #0056b3;
         }
 
+        .edit-button {
+            padding: 5px 10px;
+            background-color: #18aab6;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .edit-button:hover {
+            background-color: #0064c7;
+        }
+
         .delete-button {
             padding: 5px 10px;
             background-color: #FF5733;
@@ -108,6 +121,9 @@
                 <td>{{ customer.phone }}</td>
                 <td>{{ customer.address }}</td>
                 <td>
+                    <a href="/customers/{{ customer.id }}/edit">
+                        <button type="submit" class="edit-button">编辑</button>
+                    </a>
                     <form method="POST" action="/customers/{{ customer.id }}/delete" style="display:inline;">
                         <button type="submit" class="delete-button">删除</button>
                     </form>
