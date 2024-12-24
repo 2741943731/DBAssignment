@@ -5,6 +5,8 @@ drop table if exists Customer;
 drop table if exists Car;
 drop table if exists Warehouse;
 drop table if exists Factory;
+drop table if exists employee;
+
 
 -- 创建仓库表 (Warehouse)
 CREATE TABLE if not exists Warehouse (
@@ -51,22 +53,41 @@ CREATE TABLE if not exists Orders (
     FOREIGN KEY (car_id) REFERENCES Car(id) ON DELETE CASCADE
 );
 
+CREATE TABLE Employee (
+    employee_id VARCHAR(20)  PRIMARY KEY COMMENT '员工ID',
+    password VARCHAR(255) NOT NULL COMMENT '员工密码，建议加密存储',
+    name VARCHAR(100) NOT NULL COMMENT '员工姓名',
+    contact VARCHAR(50) COMMENT '员工联系方式',
+    employee_type ENUM('管理员', '仓库管理员', '销售管理员') NOT NULL COMMENT '员工类型'
+) COMMENT='员工表，存储所有员工信息';
+
 -- 测试数据插入 (可选)
 INSERT INTO Factory (name, address, contact_info)
-VALUES ('Toyota', '123 Factory Lane', 'factory1@example.com'),
+VALUES ('Toyota', '123 Factory Lane', 'factory1@example.com'), 
        ('Honda', '456 Industrial Blvd', 'factory2@example.com');
 
 INSERT INTO Warehouse (name, total_inventory, manager_id)
 VALUES ('Main Warehouse', 100, 1), ('Secondary Warehouse', 50, 2);
 
 INSERT INTO Car (model, price, warehouse_id, factory_id)
-VALUES ('Toyota Corolla', 20000.00, 1, 1),
-       ('Honda Civic', 22000.00, 1, 2),
+VALUES ('Toyota Corolla', 20000.00, 1, 1), 
+       ('Honda Civic', 22000.00, 1, 2), 
        ('Ford Focus', 18000.00, 2, 1);
 
 INSERT INTO Customer (name, phone, address)
-VALUES ('Alice', '1234567890', '123 Main St'),
+VALUES ('Alice', '1234567890', '123 Main St'), 
        ('Bob', '0987654321', '456 Elm St');
 
 INSERT INTO Orders (customer_id, car_id, quantity)
 VALUES (1, 1, 1), (2, 3, 2);
+
+INSERT INTO Employee (employee_id, password, name, contact, employee_type)
+VALUES
+    ('admin', 'admin123', '张三', '1234567890', '管理员'),
+    ('warehouse01', 'warehouse123', '李四', '0987654321', '仓库管理员'),
+    ('sales01', 'sales123', '王五', '1122334455', '销售管理员');
+
+select * from Employee;
+
+
+-- select * from Factory;
