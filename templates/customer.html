@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factories Management</title>
+    <title>Customers Management</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -88,27 +88,27 @@
     </style>
 </head>
 <body>
-    <h1>厂商管理</h1>
+    <h1>客户管理</h1>
 
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>名称</th>
+                <th>客户ID</th>
+                <th>姓名</th>
+                <th>电话</th>
                 <th>地址</th>
-                <th>联系方式</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
-            {% for factory in factories %}
+            {% for customer in customers %}
             <tr>
-                <td>{{ factory.id }}</td>
-                <td>{{ factory.name }}</td>
-                <td>{{ factory.address }}</td>
-                <td>{{ factory.contact_info }}</td>
+                <td>{{ customer.id }}</td>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.phone }}</td>
+                <td>{{ customer.address }}</td>
                 <td>
-                    <form method="POST" action="/factories/{{ factory.id }}/delete" style="display:inline;">
+                    <form method="POST" action="/customers/{{ customer.id }}/delete" style="display:inline;">
                         <button type="submit" class="delete-button">删除</button>
                     </form>
                 </td>
@@ -117,16 +117,16 @@
         </tbody>
     </table>
 
-    <h2>添加新厂商</h2>
-    <form method="POST" action="/factories">
-        <label for="name">厂商名称</label>
+    <h2>添加新客户</h2>
+    <form method="POST" action="/customers">
+        <label for="name">姓名</label>
         <input type="text" id="name" name="name" required>
 
-        <label for="address">地址</label>
-        <input type="text" id="address" name="address">
+        <label for="phone">电话</label>
+        <input type="text" id="phone" name="phone" required>
 
-        <label for="contact_info">联系方式</label>
-        <input type="text" id="contact_info" name="contact_info">
+        <label for="address">地址</label>
+        <input type="text" id="address" name="address" required>
 
         <button type="submit">提交</button>
     </form>
