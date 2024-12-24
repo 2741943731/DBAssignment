@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>仓库管理</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>已用库存</th>
+                <th>库存总量</th>
+                <th>管理员 ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for warehouse in warehouses %}
+            <tr>
+                <td>{{ warehouse.id }}</td>
+                <td>{{ warehouse.name }}</td>
+                <td>{{ warehouse.used_inventory }}</td>
+                <td>{{ warehouse.total_inventory }}</td>
+                <td>{{ warehouse.manager_id }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<form action="{{ url_for('add_inventory') }}" method="post">
+    <label for="warehouse_id">选择仓库</label>
+    <select name="warehouse_id">
+        {% for warehouse in warehouses %}
+            <option value="{{ warehouse.id }}">{{ warehouse.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="car_id">选择车辆</label>
+    <select name="car_id">
+        {% for car in cars %}
+            <option value="{{ car.id }}">{{ car.model }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="quantity">添加数量</label>
+    <input type="number" name="quantity" min="1" required>
+
+    <button type="submit">添加库存</button>
+</form>
+
+<form action="{{ url_for('remove_inventory') }}" method="post">
+    <label for="warehouse_id">选择仓库</label>
+    <select name="warehouse_id">
+        {% for warehouse in warehouses %}
+            <option value="{{ warehouse.id }}">{{ warehouse.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="car_id">选择车辆</label>
+    <select name="car_id">
+        {% for car in cars %}
+            <option value="{{ car.id }}">{{ car.model }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="quantity">减少数量</label>
+    <input type="number" name="quantity" min="1" required>
+
+    <button type="submit">减少库存</button>
+</form>
+
+<table>
+    <tr>
+        <th>仓库</th>
+        <th>车辆</th>
+        <th>库存数量</th>
+    </tr>
+    {% for info in inventoryinfos %}
+    <tr>
+        <td>{{ warehouse_dict[info.warehouse_id] }}</td>
+        <td>{{ car_dict[info.car_id] }}</td>
+        <td>{{ info.car_quantity }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

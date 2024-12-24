@@ -1,5 +1,6 @@
 USE CMG;
 
+drop table if exists InventoryInfo;
 drop table if exists Orders;
 drop table if exists Customer;
 drop table if exists Car;
@@ -12,7 +13,8 @@ drop table if exists employee;
 CREATE TABLE if not exists Warehouse (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    total_inventory INT DEFAULT 0,
+    total_inventory INT DEFAULT 500,
+    used_inventory INT DEFAULT 0,
     manager_id INT NOT NULL
 );
 
@@ -33,6 +35,16 @@ CREATE TABLE if not exists Car (
     factory_id INT NOT NULL,
     FOREIGN KEY (warehouse_id) REFERENCES Warehouse(id) ON DELETE CASCADE,
     FOREIGN KEY (factory_id) REFERENCES Factory(id) ON DELETE CASCADE
+);
+
+-- 创建库存信息表 (InventoryInfo)
+CREATE TABLE if not exists Inventory_Info (
+    warehouse_id INT,
+    car_id INT,
+    car_quantity INT,
+    primary key (warehouse_id, car_id),
+    foreign key (warehouse_id) references Warehouse(id),
+    foreign key (car_id) references Car(id)
 );
 
 -- 创建客户表 (Customer)
@@ -66,8 +78,8 @@ INSERT INTO Factory (name, address, contact_info)
 VALUES ('Toyota', '123 Factory Lane', 'factory1@example.com'), 
        ('Honda', '456 Industrial Blvd', 'factory2@example.com');
 
-INSERT INTO Warehouse (name, total_inventory, manager_id)
-VALUES ('Main Warehouse', 100, 1), ('Secondary Warehouse', 50, 2);
+INSERT INTO Warehouse (name, total_inventory, used_inventory, manager_id)
+VALUES ('Main Warehouse', 200, 100, 1), ('Secondary Warehouse', 100, 50, 2);
 
 INSERT INTO Car (model, price, warehouse_id, factory_id)
 VALUES ('Toyota Corolla', 20000.00, 1, 1), 
@@ -87,7 +99,11 @@ VALUES
     ('warehouse01', 'warehouse123', '李四', '0987654321', '仓库管理员'),
     ('sales01', 'sales123', '王五', '1122334455', '销售管理员');
 
-select * from Employee;
+INSERT INTO Inventory_Info (warehouse_id, car_id, car_quantity)
+VALUES
+    (1, 1, 100);
 
+select * from Employee;
+select * from Inventory_Info;
 
 -- select * from Factory;
