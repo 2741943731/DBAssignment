@@ -270,6 +270,25 @@ def manage_customers():
         return render_template('customer.html', customers=customers)
 
 
+@app.route('/customers/<int:customer_id>/edit', methods=['GET', 'POST'])
+def edit_customer(customer_id):
+    customer = Customer.query.get_or_404(customer_id)
+
+    if request.method == 'POST':
+        # 获取表单数据
+        customer.name = request.form['name']
+        customer.phone = request.form['phone']
+        customer.address = request.form['address']
+
+        # 保存修改
+        db.session.commit()
+
+        # 提交后重定向到客户管理页面
+        return redirect(url_for('manage_customers'))
+
+    return render_template('edit_customer.html', customer=customer)
+
+
 @app.route('/customers/<int:customer_id>/delete', methods=['POST'])
 def delete_customer(customer_id):
     customer = Customer.query.get_or_404(customer_id)
