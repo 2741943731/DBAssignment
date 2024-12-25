@@ -59,19 +59,29 @@ class Employee(db.Model):
     employee_type = db.Column(db.Enum('管理员', '仓库管理员', '销售管理员'), nullable=False, comment='员工类型')
 
 
+# 首页路由
 @app.route('/')
 def home():
     return render_template('home.html', title="主页")
 
 
+# 登录页面路由
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html', title="登录")
+
+
+# 处理登录请求（POST请求）
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
     username = data.get('username')
     password = data.get('password')
+
     # 假设通过数据库验证用户
-    user = Employee.query.filter_by(employee_id=username, password=password).first()
-    if user:
+    user = Employee.query.filter_by(employee_id=username).first()
+
+    if user and user.password == password:
         session['logged_in'] = True
         session['user_role'] = user.employee_type
         return jsonify({'success': True, 'role': user.employee_type})
@@ -79,16 +89,11 @@ def login():
         return jsonify({'success': False, 'message': '账号或密码错误'})
 
 
-# @app.route('/home')
-# def home():
-#     if 'logged_in' not in session:
-#         return redirect(url_for('login'))
-#     return render_template('home.html', user_role=session.get('user_role'))
-
+# 处理退出登录
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.clear()  # 清除会话
-    return jsonify({'success': True})  # 返回成功信息
+    session.clear()
+    return '', 200
 
 
 # 仓库相关路由
