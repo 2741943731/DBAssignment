@@ -1,140 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Flask Navigation</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            background-color: #f9f9f9;
-        }
-
-        h1 {
-            margin-top: 50px;
-            color: #333;
-        }
-
-        .login-container {
-            margin-top: 30px;
-        }
-
-        .login-input {
-            padding: 10px;
-            font-size: 16px;
-            margin: 10px;
-            width: 200px;
-        }
-
-        .login-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .login-button:hover {
-            background-color: #218838;
-        }
-
-        .button-container {
-            margin-top: 30px;
-            display: none; /* 默认隐藏，登录成功后显示 */
-        }
-
-        .nav-button {
-            display: inline-block;
-            margin: 10px;
-            padding: 15px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .nav-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>汽车管理系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>欢迎来到汽车管理系统</h1>
-    <div class="login-container">
-        <input type="text" id="username" class="login-input" placeholder="账号">
-        <input type="password" id="password" class="login-input" placeholder="密码">
-        <button onclick="login()" class="login-button">登录</button>
-    </div>
+    <div class="container">
+        <h1>欢迎来到汽车管理系统</h1>
 
-    <div class="button-container" id="button-container">
-        <a href="/warehouses" class="nav-button" id="warehouse-button">仓库管理</a>
-        <a href="/factories" class="nav-button" id="factory-button">厂商管理</a>
-        <a href="/cars" class="nav-button" id="car-button">汽车管理</a>
-        <a href="/customers" class="nav-button" id="customer-button">客户管理</a>
-        <a href="/orders" class="nav-button" id="order-button">订单管理</a>
-        <button onclick="logout()" class="nav-button" style="background-color: #FF5733;">退出登录</button>
-</div>
+        <!-- 如果用户未登录，显示登录按钮 -->
+        <div class="login-container" id="login-container" style="display: none;">
+            <a href="{{ url_for('login_page') }}" class="nav-button">登录</a>
+        </div>
+
+        <!-- 如果用户已登录，显示导航按钮 -->
+        <div class="button-container" id="button-container" style="display: none;">
+            <a href="/warehouses" class="nav-button" id="warehouse-button">仓库管理</a>
+            <a href="/factories" class="nav-button" id="factory-button">厂商管理</a>
+            <a href="/cars" class="nav-button" id="car-button">汽车管理</a>
+            <a href="/customers" class="nav-button" id="customer-button">客户管理</a>
+            <a href="/orders" class="nav-button" id="order-button">订单管理</a>
+            <button onclick="logout()" class="nav-button" style="background-color: #FF5733;">退出登录</button>
+        </div>
     </div>
 
     <script>
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        // 页面加载时检查是否已登录
+        window.onload = function() {
+            const isLoggedIn = sessionStorage.getItem('logged_in');
+            if (isLoggedIn) {
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('button-container').style.display = 'block';
+                const role = sessionStorage.getItem('user_role');
 
-            fetch('/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const role = data.role;
-                    document.querySelector('.login-container').style.display = 'none';
-                    const buttons = document.getElementById('button-container');
-                    buttons.style.display = 'block';
-
-                    if (role === '管理员') {
-                        // 管理员可以访问所有内容
-                    } else if (role === '仓库管理员') {
-                        document.getElementById('customer-button').style.display = 'none';
-                        document.getElementById('order-button').style.display = 'none';
-                    } else if (role === '销售管理员') {
-                        document.getElementById('warehouse-button').style.display = 'none';
-                        document.getElementById('factory-button').style.display = 'none';
-                    }
-                } else {
-                    alert('登录失败：' + data.message);
+                if (role === '管理员') {
+                    // 管理员可以访问所有内容
+                } else if (role === '仓库管理员') {
+                    document.getElementById('customer-button').style.display = 'none';
+                    document.getElementById('order-button').style.display = 'none';
+                } else if (role === '销售管理员') {
+                    document.getElementById('warehouse-button').style.display = 'none';
+                    document.getElementById('factory-button').style.display = 'none';
                 }
-            })
-            .catch(error => console.error('登录错误:', error));
+            } else {
+                document.getElementById('login-container').style.display = 'block';
+                document.getElementById('button-container').style.display = 'none';
+            }
+        };
+
+        function logout() {
+            fetch('/logout', { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        alert('已退出登录');
+                        sessionStorage.removeItem('logged_in');
+                        sessionStorage.removeItem('user_role');
+                        location.reload();
+                    } else {
+                        alert('退出登录失败');
+                    }
+                })
+                .catch(error => console.error('退出登录错误:', error));
         }
     </script>
-
-    <script>
-    function logout() {
-        fetch('/logout', { method: 'POST' })
-            .then(response => {
-                if (response.ok) {
-                    alert('已退出登录');
-                    location.reload(); // 刷新页面，显示登录界面
-                } else {
-                    alert('退出登录失败');
-                }
-            })
-            .catch(error => console.error('退出登录错误:', error));
-    }
-</script>
 </body>
 </html>

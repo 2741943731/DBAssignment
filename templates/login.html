@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>汽车管理系统</h1>
+        <div class="login-container">
+            <input type="text" id="username" class="login-input" placeholder="账号">
+            <input type="password" id="password" class="login-input" placeholder="密码">
+            <button onclick="login()" class="login-button">登录</button>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const role = data.role;
+                    sessionStorage.setItem('logged_in', true);
+                    sessionStorage.setItem('user_role', role);
+                    window.location.href = '/';  // 登录成功后跳转到主页
+                } else {
+                    alert('登录失败：' + data.message);
+                }
+            })
+            .catch(error => console.error('登录错误:', error));
+        }
+    </script>
+</body>
+</html>
