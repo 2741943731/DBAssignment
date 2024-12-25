@@ -140,5 +140,15 @@
     </tr>
     {% endfor %}
 </table>
+<!-- 显示 Flash 消息 -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 </body>
 </html>
