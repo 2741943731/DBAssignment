@@ -1,69 +1,20 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>汽车管理系统</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>欢迎来到汽车管理系统</h1>
+<!-- templates/home.html -->
+{% extends 'layout.html' %}
 
-        <!-- 如果用户未登录，显示登录按钮 -->
-        <div class="login-container" id="login-container" style="display: none;">
-            <a href="{{ url_for('login_page') }}" class="nav-button">登录</a>
-        </div>
+{% block title %}主页 - 汽车销售管理系统{% endblock %}
 
-        <!-- 如果用户已登录，显示导航按钮 -->
-        <div class="button-container" id="button-container" style="display: none;">
-            <a href="/warehouses" class="nav-button" id="warehouse-button">仓库管理</a>
-            <a href="/factories" class="nav-button" id="factory-button">厂商管理</a>
-            <a href="/cars" class="nav-button" id="car-button">汽车管理</a>
-            <a href="/customers" class="nav-button" id="customer-button">客户管理</a>
-            <a href="/orders" class="nav-button" id="order-button">订单管理</a>
-            <button onclick="logout()" class="nav-button" style="background-color: #FF5733;">退出登录</button>
-        </div>
-    </div>
-
-    <script>
-        // 页面加载时检查是否已登录
-        window.onload = function() {
-            const isLoggedIn = sessionStorage.getItem('logged_in');
-            if (isLoggedIn) {
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('button-container').style.display = 'block';
-                const role = sessionStorage.getItem('user_role');
-
-                if (role === '管理员') {
-                    // 管理员可以访问所有内容
-                } else if (role === '仓库管理员') {
-                    document.getElementById('customer-button').style.display = 'none';
-                    document.getElementById('order-button').style.display = 'none';
-                } else if (role === '销售管理员') {
-                    document.getElementById('warehouse-button').style.display = 'none';
-                    document.getElementById('factory-button').style.display = 'none';
-                }
-            } else {
-                document.getElementById('login-container').style.display = 'block';
-                document.getElementById('button-container').style.display = 'none';
-            }
-        };
-
-        function logout() {
-            fetch('/logout', { method: 'POST' })
-                .then(response => {
-                    if (response.ok) {
-                        alert('已退出登录');
-                        sessionStorage.removeItem('logged_in');
-                        sessionStorage.removeItem('user_role');
-                        location.reload();
-                    } else {
-                        alert('退出登录失败');
-                    }
-                })
-                .catch(error => console.error('退出登录错误:', error));
-        }
-    </script>
-</body>
-</html>
+{% block content %}
+<div class="row">
+  <div class="col-md-12 text-center">
+    <h1 class="mt-4">欢迎使用汽车销售管理系统</h1>
+    <p class="lead mt-3">在这里你可以管理仓库、厂商、汽车、客户以及订单</p>
+    <hr />
+    <img 
+      src="{{ url_for('static', filename='sysu_logo.png') }}" 
+      class="img-fluid rounded shadow"
+      alt="中山大学校徽"
+      style="max-height: 400px;"
+    >
+  </div>
+</div>
+{% endblock content %}
