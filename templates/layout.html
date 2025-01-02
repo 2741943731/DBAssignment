@@ -73,57 +73,59 @@
           </a>
         </li>
 
-        <!-- 仓库管理 -->
-        <li class="nav-item">
-          <a 
-            class="nav-link {% if request.endpoint == 'get_warehouses_page' %}active{% endif %}" 
-            href="{{ url_for('get_warehouses_page') }}"
-          >
-            仓库管理
-          </a>
-        </li>
+        <!-- 仓库管理和汽车管理 -->
+        {% if session.get('user_role') in ['管理员', '仓库管理员'] %}
+          <li class="nav-item">
+            <a 
+              class="nav-link {% if request.endpoint == 'get_warehouses_page' %}active{% endif %}" 
+              href="{{ url_for('get_warehouses_page') }}"
+            >
+              仓库管理
+            </a>
+          </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link {% if request.endpoint == 'manage_cars' %}active{% endif %}" 
+              href="{{ url_for('manage_cars') }}"
+            >
+              汽车管理
+            </a>
+          </li>
+        {% endif %}
 
-        <!-- 厂商管理 -->
-        <li class="nav-item">
-          <a 
-            class="nav-link {% if request.endpoint == 'manage_factories' %}active{% endif %}" 
-            href="{{ url_for('manage_factories') }}"
-          >
-            厂商管理
-          </a>
-        </li>
+        <!-- 厂商管理（仅管理员） -->
+        {% if session.get('user_role') == '管理员' %}
+          <li class="nav-item">
+            <a 
+              class="nav-link {% if request.endpoint == 'manage_factories' %}active{% endif %}" 
+              href="{{ url_for('manage_factories') }}"
+            >
+              厂商管理
+            </a>
+          </li>
+        {% endif %}
 
-        <!-- 汽车管理 -->
-        <li class="nav-item">
-          <a 
-            class="nav-link {% if request.endpoint == 'manage_cars' %}active{% endif %}" 
-            href="{{ url_for('manage_cars') }}"
-          >
-            汽车管理
-          </a>
-        </li>
+        <!-- 客户管理和订单管理 -->
+        {% if session.get('user_role') in ['管理员', '销售管理员'] %}
+          <li class="nav-item">
+            <a 
+              class="nav-link {% if request.endpoint == 'manage_customers' %}active{% endif %}" 
+              href="{{ url_for('manage_customers') }}"
+            >
+              客户管理
+            </a>
+          </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link {% if request.endpoint == 'manage_orders' %}active{% endif %}" 
+              href="{{ url_for('manage_orders') }}"
+            >
+              订单管理
+            </a>
+          </li>
+        {% endif %}
 
-        <!-- 客户管理 -->
-        <li class="nav-item">
-          <a 
-            class="nav-link {% if request.endpoint == 'manage_customers' %}active{% endif %}" 
-            href="{{ url_for('manage_customers') }}"
-          >
-            客户管理
-          </a>
-        </li>
-
-        <!-- 订单管理 -->
-        <li class="nav-item">
-          <a 
-            class="nav-link {% if request.endpoint == 'manage_orders' %}active{% endif %}" 
-            href="{{ url_for('manage_orders') }}"
-          >
-            订单管理
-          </a>
-        </li>
-
-        <!-- 登录/登出：可根据是否session里有用户信息进行判断 -->
+        <!-- 登录/登出 -->
         {% if session.get('logged_in') %}
           <li class="nav-item">
             <form action="{{ url_for('logout') }}" method="POST" class="d-inline">

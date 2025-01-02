@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import pymysql
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost:3306/CMG'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:030927@localhost:3306/CMG'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'your_secret_key'
 db = SQLAlchemy(app)
@@ -93,7 +93,7 @@ def login():
 @app.route('/logout', methods=['POST'])
 def logout():
     session.clear()
-    return '', 200
+    return redirect(url_for('login_page'))
 
 
 # 仓库相关路由
