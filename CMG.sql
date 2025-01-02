@@ -199,7 +199,7 @@ VALUES ('Toyota', '123 Factory Lane', 'factory1@example.com'),
        ('Honda', '456 Industrial Blvd', 'factory2@example.com');
 
 INSERT INTO Warehouse (name, total_inventory, used_inventory, manager_id)
-VALUES ('Main Warehouse', 200, 100, 1), ('Secondary Warehouse', 100, 50, 2);
+VALUES ('Main Warehouse', 200, 100, 1), ('Secondary Warehouse', 100, 0, 2);
 
 INSERT INTO Car (model, price, factory_id)
 VALUES ('Toyota Corolla', 20000.00, 1),
@@ -211,7 +211,7 @@ VALUES ('Alice', '1234567890', '123 Main St'),
        ('Bob', '0987654321', '456 Elm St');
 
 INSERT INTO Orders (customer_id, car_id, quantity)
-VALUES (1, 1, 1), (2, 3, 2);
+VALUES (1, 1, 1);
 
 INSERT INTO Employee (employee_id, password, name, contact, employee_type)
 VALUES
