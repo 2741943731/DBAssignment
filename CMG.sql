@@ -1,3 +1,5 @@
+create database CMG;
+
 USE CMG;
 
 drop table if exists Inventory_Info;
@@ -210,6 +212,10 @@ INSERT INTO Customer (name, phone, address)
 VALUES ('Alice', '1234567890', '123 Main St'), 
        ('Bob', '0987654321', '456 Elm St');
 
+INSERT INTO Inventory_Info (warehouse_id, car_id, car_quantity)
+VALUES
+    (1, 1, 100);
+
 INSERT INTO Orders (customer_id, car_id, quantity)
 VALUES (1, 1, 1);
 
@@ -218,10 +224,6 @@ VALUES
     ('admin', 'admin123', '张三', '1234567890', '管理员'),
     ('warehouse01', 'warehouse123', '李四', '0987654321', '仓库管理员'),
     ('sales01', 'sales123', '王五', '1122334455', '销售管理员');
-
-INSERT INTO Inventory_Info (warehouse_id, car_id, car_quantity)
-VALUES
-    (1, 1, 100);
 
 select * from Employee;
 select * from Inventory_Info;
